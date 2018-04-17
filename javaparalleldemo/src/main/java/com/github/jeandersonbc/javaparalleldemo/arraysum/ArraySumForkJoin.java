@@ -11,11 +11,13 @@ public class ArraySumForkJoin implements ArraySumProblem {
 
 		private static final long serialVersionUID = 8348136001125722839L;
 
-		private int[] values;
+		private static final int THRESHOLD = 100;
+
+		private Integer[] values;
 		private int left;
 		private int right;
 
-		public ParallelArraySum(int[] values, int left, int right) {
+		public ParallelArraySum(Integer[] values, int left, int right) {
 			this.left = left;
 			this.right = right;
 			this.values = values;
@@ -25,9 +27,13 @@ public class ArraySumForkJoin implements ArraySumProblem {
 		protected Integer compute() {
 			if (left > right)
 				return 0;
-			if (left == right)
-				return values[left];
-
+			if (right - left <= THRESHOLD) {
+				int sum = 0;
+				for (int i = left; i <= right; i++) {
+					sum += values[i];
+				}
+				return sum;
+			}
 			int mid = (left + right) >> 1;
 			ParallelArraySum leftSum = new ParallelArraySum(values, left, mid);
 			leftSum.fork();
@@ -38,7 +44,7 @@ public class ArraySumForkJoin implements ArraySumProblem {
 	}
 
 	@Override
-	public int sum(int[] values) {
+	public int sum(Integer[] values) {
 		if (values.length == 0) {
 			throw new NoSuchElementException("Shouldn't be an empty array");
 		}

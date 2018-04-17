@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 public class ArraySumSequential implements ArraySumProblem {
 
 	@Override
-	public int sum(int[] values) {
+	public int sum(Integer[] values) {
 		if (values.length == 0) {
 			throw new NoSuchElementException("Shouldn't be an empty array");
 		}

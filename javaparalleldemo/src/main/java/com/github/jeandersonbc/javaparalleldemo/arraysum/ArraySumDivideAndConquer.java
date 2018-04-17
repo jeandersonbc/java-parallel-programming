@@ -5,14 +5,14 @@ import java.util.NoSuchElementException;
 public class ArraySumDivideAndConquer implements ArraySumProblem {
 
 	@Override
-	public int sum(int[] values) {
+	public int sum(Integer[] values) {
 		if (values.length == 0) {
 			throw new NoSuchElementException("Shouldn't be an empty array");
 		}
 		return sum(values, 0, values.length - 1);
 	}
 
-	private int sum(int[] values, int i, int j) {
+	private int sum(Integer[] values, int i, int j) {
 		if (i == j) {
 			return values[i];
 		}
