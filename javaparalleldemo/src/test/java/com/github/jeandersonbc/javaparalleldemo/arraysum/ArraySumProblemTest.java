@@ -17,14 +17,25 @@ public class ArraySumProblemTest {
 		oracle = new ArraySumSequential();
 
 		// TODO: implement a parallel version
-		underTest = new ArraySumSequential();
+		underTest = new ArraySumDivideAndConquer();
+	}
+
+	@Test
+	public void shouldSumRandomValuesFixedSize() {
+		int reruns = 5;
+		for (int i = 0; i < reruns; i++) {
+			int[] input = randomIntArray(10);
+			assertEquals(oracle.sum(input), underTest.sum(input));
+		}
 	}
 
 	@Test
 	public void shouldSumRandomValues() {
-		int reruns = 5;
+		int reruns = 10;
+		int sizeBound = 10_000_000;
+		Random generator = new Random();
 		for (int i = 0; i < reruns; i++) {
-			int[] input = randomIntArray(10);
+			int[] input = randomIntArray(generator.nextInt(sizeBound));
 			assertEquals(oracle.sum(input), underTest.sum(input));
 		}
 	}
