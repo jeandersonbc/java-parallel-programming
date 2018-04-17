@@ -1,50 +1,41 @@
 package com.github.jeandersonbc.javaparalleldemo.arraysum;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Random;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
+@RunWith(Parameterized.class)
 public class ArraySumProblemTest {
 
-	private ArraySumProblem oracle;
-	private ArraySumProblem seqDivideAndConquer;
-	private ArraySumProblem forkJoinImpl;
+	private static final ArraySumProblem ORACLE = new ArraySumSequential();
+	private static final Integer[] INPUT = randomIntArray(10_000_000);
 
-	@Before
-	public void setUp() throws Exception {
-		oracle = new ArraySumSequential();
-		seqDivideAndConquer = new ArraySumDivideAndConquer();
-		forkJoinImpl = new ArraySumForkJoin();
+	private ArraySumProblem underTest;
+
+	public ArraySumProblemTest(ArraySumProblem underTest) {
+		this.underTest = underTest;
 	}
 
-	@Test
-	public void shouldSumRandomValuesFixedSize() {
-		int reruns = 5;
-		for (int i = 0; i < reruns; i++) {
-			int[] input = randomIntArray(10);
-			assertEquals(oracle.sum(input), seqDivideAndConquer.sum(input));
-			assertEquals(oracle.sum(input), forkJoinImpl.sum(input));
-		}
+	@Parameters(name = "{index}: {0}")
+	public static Collection<ArraySumProblem> provider() throws Exception {
+		return Arrays.asList(new ArraySumDivideAndConquer(), new ArraySumForkJoin());
 	}
 
 	@Test
 	public void shouldSumRandomValues() {
-		int reruns = 10;
-		int sizeBound = 10_000_000;
-		Random generator = new Random();
-		for (int i = 0; i < reruns; i++) {
-			int[] input = randomIntArray(generator.nextInt(sizeBound));
-			assertEquals(oracle.sum(input), seqDivideAndConquer.sum(input));
-			assertEquals(oracle.sum(input), forkJoinImpl.sum(input));
-		}
+		assertEquals(ORACLE.sum(INPUT), underTest.sum(INPUT));
 	}
 
-	private int[] randomIntArray(int size) {
-		Random generator = new Random();
-		int[] input = new int[size];
+	private static Integer[] randomIntArray(int size) {
+		Random generator = new Random(1235);
+		Integer[] input = new Integer[size];
 		for (int i = 0; i < input.length; i++) {
 			input[i] = generator.nextInt();
 		}
