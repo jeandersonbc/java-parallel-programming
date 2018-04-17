@@ -10,14 +10,14 @@ import org.junit.Test;
 public class ArraySumProblemTest {
 
 	private ArraySumProblem oracle;
-	private ArraySumProblem underTest;
+	private ArraySumProblem seqDivideAndConquer;
+	private ArraySumProblem forkJoinImpl;
 
 	@Before
 	public void setUp() throws Exception {
 		oracle = new ArraySumSequential();
-
-		// TODO: implement a parallel version
-		underTest = new ArraySumDivideAndConquer();
+		seqDivideAndConquer = new ArraySumDivideAndConquer();
+		forkJoinImpl = new ArraySumForkJoin();
 	}
 
 	@Test
@@ -25,7 +25,8 @@ public class ArraySumProblemTest {
 		int reruns = 5;
 		for (int i = 0; i < reruns; i++) {
 			int[] input = randomIntArray(10);
-			assertEquals(oracle.sum(input), underTest.sum(input));
+			assertEquals(oracle.sum(input), seqDivideAndConquer.sum(input));
+			assertEquals(oracle.sum(input), forkJoinImpl.sum(input));
 		}
 	}
 
@@ -36,7 +37,8 @@ public class ArraySumProblemTest {
 		Random generator = new Random();
 		for (int i = 0; i < reruns; i++) {
 			int[] input = randomIntArray(generator.nextInt(sizeBound));
-			assertEquals(oracle.sum(input), underTest.sum(input));
+			assertEquals(oracle.sum(input), seqDivideAndConquer.sum(input));
+			assertEquals(oracle.sum(input), forkJoinImpl.sum(input));
 		}
 	}
 
