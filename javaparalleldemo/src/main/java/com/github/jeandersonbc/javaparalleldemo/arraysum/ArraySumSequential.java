@@ -5,13 +5,13 @@ import java.util.NoSuchElementException;
 public class ArraySumSequential implements ArraySumProblem {
 
 	@Override
-	public int sum(Integer[] values) {
+	public Double sum(Double[] values) {
 		if (values.length == 0) {
 			throw new NoSuchElementException("Shouldn't be an empty array");
 		}
-		int total = values[0];
-		for (int i = 1; i < values.length; i++) {
-			total += values[i];
+		double total = 0.0;
+		for (int i = 0; i < values.length; i++) {
+			total += 1 / values[i];
 		}
 		return total;
 	}

@@ -4,18 +4,19 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Random;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import com.github.jeandersonbc.javaparalleldemo.utils.DataGen;
+
 @RunWith(Parameterized.class)
 public class ArraySumProblemTest {
 
 	private static final ArraySumProblem ORACLE = new ArraySumSequential();
-	private static final Integer[] INPUT = randomIntArray(10_000_000);
+	private static final Double[] INPUT = DataGen.randomDoubleArray(100);
 
 	private ArraySumProblem underTest;
 
@@ -25,21 +26,12 @@ public class ArraySumProblemTest {
 
 	@Parameters(name = "{index}: {0}")
 	public static Collection<ArraySumProblem> provider() throws Exception {
-		return Arrays.asList(new ArraySumDivideAndConquer(), new ArraySumForkJoin());
+		return Arrays.asList(new ArraySumForkJoin());
 	}
 
 	@Test
 	public void shouldSumRandomValues() {
 		assertEquals(ORACLE.sum(INPUT), underTest.sum(INPUT));
-	}
-
-	private static Integer[] randomIntArray(int size) {
-		Random generator = new Random(1235);
-		Integer[] input = new Integer[size];
-		for (int i = 0; i < input.length; i++) {
-			input[i] = generator.nextInt();
-		}
-		return input;
 	}
 
 }
